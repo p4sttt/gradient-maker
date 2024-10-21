@@ -1,7 +1,11 @@
 src_sources = [
-  'main.cpp'
+  'main.cpp',
+  'constants.hpp',
+  'constants.cpp'
 ]
 
 subdir('window')
+subdir('math')
+subdir('utils')
 
-executable('demo', src_sources, dependencies: [sdl2_dep])
+executable('bilinear_interpolation', src_sources, dependencies: [sdl2_dep])

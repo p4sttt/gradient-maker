@@ -4,6 +4,7 @@
 #include "SDL.h"
 #include <string>
 #include <iostream>
+#include "constants.hpp"
 
 class Window {
   public:

@@ -1,4 +1,4 @@
-#include "window/window.hpp"
+#include "window/Window.hpp"
 
 Window::Window() {
   if (SDL_Init(SDL_INIT_VIDEO) < 0) {
@@ -6,7 +6,15 @@ Window::Window() {
     return;
   } 
 
-  window = SDL_CreateWindow("www", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_SHOWN);
+  window = SDL_CreateWindow(
+      constants::WINDOW_TITLE, 
+      SDL_WINDOWPOS_CENTERED, 
+      SDL_WINDOWPOS_CENTERED, 
+      constants::WINDOW_WIDTH, 
+      constants::WINDOW_HEIGHT, 
+      SDL_WINDOW_SHOWN
+  );
+
   if (window == nullptr) {
     std::cerr << "Failed to create SDL window" << std::endl;
     return;
