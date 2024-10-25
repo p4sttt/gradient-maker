@@ -1,12 +1,12 @@
 #ifndef WINDOW_HPP
 #define WINDOW_HPP
 
-#include <string>
 #include <stdexcept>
+#include <string>
 
 #include "SDL.h"
-#include "window/window_config.hpp"
 #include "common/logger.hpp"
+#include "window/window_config.hpp"
 
 class Window {
  public:
@@ -16,8 +16,8 @@ class Window {
   void clear() const;
   void present() const;
 
-  const SDL_Renderer &getRenderer() const;
-  const SDL_Window &getWindow() const;
+  SDL_Renderer &getRenderer() const;
+  SDL_Window &getWindow() const;
 
   const bool isInitialized() const;
 

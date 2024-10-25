@@ -1,5 +1,7 @@
 #include "math/linear_interpolation.hpp"
 
+LinearInterpolation::LinearInterpolation() : x1(0), y1(0), x2(0), y2(0) {}
+
 LinearInterpolation::LinearInterpolation(const double &x1, const double &y1,
                                          const double &x2, const double &y2)
     : x1(x1), y1(y1), x2(x2), y2(y2) {

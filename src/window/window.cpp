@@ -25,7 +25,7 @@ Window::Window(const int &width, const int &height, const char *title) {
     return;
   }
 
-  Logger::debug("window has been successfully initialized");
+  Logger::debug("Window successfully created");
   initialized = true;
 }
 
@@ -52,8 +52,8 @@ void Window::present() const {
   }
 }
 
-const SDL_Renderer &Window::getRenderer() const { return *renderer; }
+SDL_Renderer &Window::getRenderer() const { return *renderer; }
 
-const SDL_Window &Window::getWindow() const { return *window; }
+SDL_Window &Window::getWindow() const { return *window; }
 
 const bool Window::isInitialized() const { return initialized; }
