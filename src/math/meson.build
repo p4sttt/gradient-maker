@@ -1,6 +1,6 @@
 math_sources = [
-  'math/LinearInterpolation.hpp',
-  'math/LinearInterpolation.cpp'
+  'math/linear_interpolation.hpp',
+  'math/linear_interpolation.cpp'
 ]
 
-src_sources += math_sources
+main_sources += math_sources

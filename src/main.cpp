@@ -1,62 +1,45 @@
-#include "window/Window.hpp"
-#include "utils/ColorUtils.hpp"
-#include "math/LinearInterpolation.hpp"
-#include "constants.hpp"
-#include <string>
+#include "common/logger.hpp"
+#include "input/cli_parser.hpp"
+#include "input/input_utils.hpp"
 
 int main(int argc, char *argv[]) {
-  int width = constants::WINDOW_WIDTH;
-  int height = constants::WINDOW_HEIGHT;
-  int redStart, greenStart, blueStart;
-  int redEnd, greenEnd, blueEnd;
-  Window *window = new Window();
+  CLIParser *cliParser = nullptr;
+  try {
+    cliParser = new CLIParser(argc, argv);
 
-  if (!window->isInitialized()) {
+  } catch (const std::exception &e) {
+    Logger::error(e.what());
     return 1;
   }
 
-  // pring all programs arguments
-  for (int i = 0; i < argc; ++i) {
-    std::string arg = std::string(argv[i]);
-    std::cout << i << ": " << arg << std::endl;
+  Logger::debug(
+      "Input Interpolation Type: " +
+      InputUtils::interpolationTypeToString((*cliParser).getInterpolationType()));
+
+  int **colors = nullptr;
+  int colorsCount;
+
+  try {
+    switch ((*cliParser).getInterpolationType()) {
+      case InterpolationType::Bilinear:
+        colors = (*cliParser).parseBilinearInterpolationColors();
+        colorsCount = 4;
+        break;
+
+      case InterpolationType::Linear:
+        colors = (*cliParser).parseLinearInterpolationColors();
+        colorsCount = 2;
+        break;
+    }
+  } catch (const std::exception &e) {
+    Logger::error(e.what());
+    return 1;
   }
 
-  // initialize start color and interpolation function for each color
-  std::string hexStart = std::string(argv[1]);
-  std::string hexEnd = std::string(argv[2]);
-  ColorUtils::hexToRGB(hexStart, redStart, greenStart, blueStart);
-  ColorUtils::hexToRGB(hexEnd, redEnd, greenEnd, blueEnd);
-  LinearInterpolation *redInterpolation = new LinearInterpolation(0, redStart, width, redEnd);
-  LinearInterpolation *greenInterpolation = new LinearInterpolation(0, greenStart, width, greenEnd);
-  LinearInterpolation *blueInterpolation = new LinearInterpolation(0, blueStart, width, blueEnd);
-
-  SDL_Event event;
-  bool quit = false;
-  while (!quit) {
-    SDL_PollEvent(&event);
-    if (event.type == SDL_QUIT) {
-      quit = true;
-    }
-  
-    window->clear();
-
-    for (int x = 0; x < width; ++x) {
-      Uint8 red = static_cast<Uint8>(redInterpolation->interpolate(x));
-      Uint8 green = static_cast<Uint8>(greenInterpolation->interpolate(x));
-      Uint8 blue = static_cast<Uint8>(blueInterpolation->interpolate(x)); 
-      SDL_SetRenderDrawColor(window->getRenderer(), red, green, blue, 255);
-      for (int y = 0; y < height; ++y) {
-        SDL_RenderDrawPoint(window->getRenderer(), x, y);
-      }
-    }
-
-    window->present();
+  for (int i = 0; i < colorsCount; i++) {
+    Logger::debug("Color " + std::to_string(i) + ": " + std::to_string(colors[i][0]) + " " +
+                  std::to_string(colors[i][1]) + " " + std::to_string(colors[i][2]));
   }
-
-  delete window;
-  delete redInterpolation;
-  delete greenInterpolation;
-  delete blueInterpolation;
 
   return 0;
 }

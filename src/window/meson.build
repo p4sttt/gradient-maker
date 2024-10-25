@@ -1,6 +1,7 @@
 window_sources = [
-  'window/Window.hpp',
-  'window/Window.cpp'
+  'window/window.hpp',
+  'window/window.cpp',
+  'window/window_config.hpp'
 ]
 
-src_sources += window_sources
+main_sources += window_sources

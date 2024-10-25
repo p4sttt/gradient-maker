@@ -1,11 +1,10 @@
-src_sources = [
-  'main.cpp',
-  'constants.hpp',
-  'constants.cpp'
+main_sources = [
+  'main.cpp'
 ]
 
 subdir('window')
 subdir('math')
-subdir('utils')
+subdir('common')
+subdir('input')
 
-executable('bilinear_interpolation', src_sources, dependencies: [sdl2_dep])
+executable('gradient_maker', main_sources, dependencies: [sdl2_dep])
